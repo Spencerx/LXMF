@@ -122,7 +122,7 @@ You can try out the paper messaging functionality by using the following QR code
 
 The [Sideband](https://unsigned.io/sideband) application allows you to do this easily. After you have imported the identity into an app of your choice, you can scan the following QR code and open it in the app, where it will be decrypted and added as a message.
 
-[Paper message QR code](:/page/blob.mu`g=reticulum|r=lxmf|ref=HEAD|path=docs%2Fpaper_msg_test.png)
+[Paper message QR code](a8d24177d946de4f1f0a0fe1af9a1338:/page/blob.mu`g=reticulum|r=lxmf|ref=HEAD|path=docs%2Fpaper_msg_test.png)
 
 You can also find the entire message in this link:
 
