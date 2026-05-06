@@ -97,7 +97,6 @@ class LXMRouter:
 
         self.pending_inbound       = []
         self.pending_outbound      = []
-        self.failed_outbound       = []
         self.direct_links          = {}
         self.backchannel_links     = {}
         self.delivery_destinations = {}
@@ -1645,6 +1644,10 @@ class LXMRouter:
     def handle_outbound(self, lxmessage):
         destination_hash = lxmessage.get_destination().hash
 
+        if lxmessage.desired_method == LXMessage.PROPAGATED and not self.outbound_propagation_node:
+            self.fail_message(lxmessage)
+            raise IOError("Attempt to send propagated message with no outbound propagation node configured")
+
         if lxmessage.stamp_cost == None:
             if destination_hash in self.outbound_stamp_costs:
                 stamp_cost = self.outbound_stamp_costs[destination_hash][1]
@@ -2393,14 +2396,8 @@ class LXMRouter:
         RNS.log(str(lxmessage)+" failed to send", RNS.LOG_DEBUG)
 
         lxmessage.progress = 0.0
-        if lxmessage in self.pending_outbound:
-            self.pending_outbound.remove(lxmessage)
-
-        self.failed_outbound.append(lxmessage)
-
-        if lxmessage.state != LXMessage.REJECTED:
-            lxmessage.state = LXMessage.FAILED
-
+        if lxmessage in self.pending_outbound: self.pending_outbound.remove(lxmessage)
+        if lxmessage.state != LXMessage.REJECTED: lxmessage.state = LXMessage.FAILED
         if lxmessage.failed_callback != None and callable(lxmessage.failed_callback):
             lxmessage.failed_callback(lxmessage)
 

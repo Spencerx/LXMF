@@ -18,7 +18,7 @@ class LXMFDeliveryAnnounceHandler:
             self.lxmrouter.update_stamp_cost(destination_hash, stamp_cost)
 
         except Exception as e:
-            RNS.log(f"An error occurred while trying to decode announced stamp cost. The contained exception was: {e}", RNS.LOG_ERROR)
+            RNS.log(f"Could not decode stamp cost from announce data. The contained exception was: {e}", RNS.LOG_DEBUG)
 
         for lxmessage in self.lxmrouter.pending_outbound:
             if destination_hash     == lxmessage.destination_hash:
